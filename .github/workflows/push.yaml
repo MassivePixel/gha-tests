@@ -20,8 +20,13 @@ jobs:
         #   project_id: "infra-massivepixel"
         #   workload_identity_provider: "projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider"
 
-      - name: Register gcloud as a Docker credential helper
-        run: gcloud auth configure-docker
+    #   - name: Register gcloud as a Docker credential helper
+    #     run: gcloud auth configure-docker
+      - name: Auth docker
+        run: | 
+          gcloud auth print-access-token | docker login -u oauth2accesstoken \
+          --password-stdin https://europe-docker.pkg.dev
+    
       - uses: docker/build-push-action@v4
         with:
           context: .
